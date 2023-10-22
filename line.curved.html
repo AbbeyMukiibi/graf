@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Curved Line Graph with Scales in D3.js</title>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+
+<div id="line-graph"></div>
+
+<script>
+// Example data
+const data = [
+  { x: 0, y: 10 },
+  { x: 1, y: 20 },
+  { x: 2, y: 15 },
+  { x: 3, y: 25 },
+  { x: 4, y: 18 },
+  { x: 5, y: 30 }
+];
+
+const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+const width = 400 - margin.left - margin.right;
+const height = 300 - margin.top - margin.bottom;
+
+const svg = d3.select("#line-graph")
+  .append("svg")
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+  .attr("transform", `translate(${margin.left},${margin.top})`);
+
+const xScale = d3.scaleLinear()
+  .domain([0, d3.max(data, d => d.x)]) // Set the x-axis domain based on your data
+  .range([0, width]);
+
+const yScale = d3.scaleLinear()
+  .domain([0, d3.max(data, d => d.y)]) // Set the y-axis domain based on your data
+  .range([height, 0]);
+
+const line = d3.line()
+  .x(d => xScale(d.x))
+  .y(d => yScale(d.y))
+  .curve(d3.curveBasis); // Use a curve type (e.g., curveBasis)
+
+svg.append("path")
+  .datum(data)
+  .attr("fill", "none")
+  .attr("stroke", "blue") // Line color
+  .attr("stroke-width", 2) // Line width
+  .attr("d", line);
+
+svg.append("g")
+  .attr("transform", `translate(0, ${height})`)
+  .call(d3.axisBottom(xScale));
+
+svg.append("g")
+  .call(d3.axisLeft(yScale));
+</script>
+
+</body>
+</html>

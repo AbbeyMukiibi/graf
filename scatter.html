@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Scatter Plot with Scales in D3.js</title>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+
+<div id="scatter-plot"></div>
+
+<script>
+// Example data
+const data = [
+  { x: 10, y: 30 },
+  { x: 20, y: 40 },
+  { x: 30, y: 20 },
+  { x: 40, y: 45 },
+  { x: 50, y: 10 },
+];
+
+const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+const width = 400 - margin.left - margin.right;
+const height = 400 - margin.top - margin.bottom;
+
+const svg = d3.select("#scatter-plot")
+  .append("svg")
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+  .attr("transform", `translate(${margin.left},${margin.top})`);
+
+const xScale = d3.scaleLinear()
+  .domain([0, d3.max(data, d => d.x)]) // Set the x-axis domain based on your data
+  .range([0, width]);
+
+const yScale = d3.scaleLinear()
+  .domain([0, d3.max(data, d => d.y)]) // Set the y-axis domain based on your data
+  .range([height, 0]);
+
+svg.selectAll("circle")
+  .data(data)
+  .enter()
+  .append("circle")
+  .attr("cx", d => xScale(d.x))
+  .attr("cy", d => yScale(d.y))
+  .attr("r", 5) // Circle radius
+  .attr("fill", "blue"); // Circle color
+
+// Add x-axis
+svg.append("g")
+  .attr("transform", `translate(0, ${height})`)
+  .call(d3.axisBottom(xScale));
+
+// Add y-axis
+svg.append("g")
+  .call(d3.axisLeft(yScale));
+</script>
+
+</body>
+</html>
