@@ -1,4 +1,7 @@
-if (define == "bar"){
+if (typeof define === 'undefined'){
+  alert("please add the define constant");
+}
+else if (define == "bar"){
 const margin = { top: 20, right: 30, bottom: 40, left: 40 };
 const width = 400 - margin.left - margin.right;
 const height = 300 - margin.top - margin.bottom;
@@ -198,3 +201,8 @@ svg.append("g")
 svg.append("g")
   .call(d3.axisLeft(yScale));
 }
+else if (define !== "bar" || define !== "pie" || define !== "scatter" || define !== "line" || define !== "area") {
+  var message = "Wrongly defined `"+define+"' is not available in Graf js";
+  alert(message)
+}
+
